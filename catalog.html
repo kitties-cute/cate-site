@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog - EBURG</title>
+    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/316217684?s=400&u=2b01b96d2ad1e4f698ff1394e711e619a9a2f029&v=4">
+    <link rel="stylesheet" href="style.css">
+    <script src="maintenance.js"></script>
+    <style>
+        .catalog-container {
+            display: flex;
+            gap: 20px;
+        }
+        .sidebar {
+            width: 180px;
+        }
+        .sidebar h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .sidebar ul {
+            list-style: none;
+        }
+        .sidebar li a {
+            color: #393b3d;
+            text-decoration: none;
+            font-size: 12px;
+            display: block;
+            padding: 3px 0;
+        }
+        .sidebar li a.active {
+            font-weight: bold;
+            color: #00a2ff;
+        }
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            flex-grow: 1;
+        }
+        .item-card {
+            background: white;
+            border: 1px solid #d6d6d6;
+            border-radius: 3px;
+            padding: 8px;
+            position: relative;
+        }
+        .item-card img {
+            width: 100%;
+            aspect-ratio: 1;
+        }
+        .item-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ff8c00;
+            color: white;
+            font-size: 9px;
+            padding: 1px 4px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+        .item-title {
+            font-size: 12px;
+            color: #00a2ff;
+            margin: 5px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .item-price {
+            font-weight: bold;
+            font-size: 11px;
+            color: #00a227;
+        }
+    </style>
+    <script src="/imgfix.js"></script>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">
+            <img src="EBURG-logo.png" alt="EBURG">
+        </a>
+        <nav class="main-nav">
+            <a href="games.html">Games</a>
+            <a href="catalog.html">Catalog</a>
+            <a href="#">Develop</a>
+            <a href="#">Robux</a>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="nav-right">
+            <a href="index.html">Sign Up</a>
+            <a href="index.html">Log In</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="ad-banner">728x90 Leaderboard Advertisement</div>
+        <h1 style="margin-bottom: 15px;">Catalog</h1>
+
+        <div class="catalog-container">
+            <div class="sidebar">
+                <h3>Category</h3>
+                <ul>
+                    <li><a href="#">View All Items</a></li>
+                    <li><a href="#" class="active">Featured Items</a></li>
+                    <li><a href="#">Collectibles</a></li>
+                    <li><a href="#">Clothing</a></li>
+                    <li><a href="#">Body Parts</a></li>
+                    <li><a href="#">Gear</a></li>
+                    <li><a href="#">Accessories</a></li>
+                </ul>
+            </div>
+
+            <div class="catalog-grid">
+                <div class="item-card">
+                    <span class="item-badge">New</span>
+                    <img src="https://via.placeholder.com/120" alt="Head in a Test Tube">
+                    <div class="item-title">Head in a Test Tube</div>
+                    <div class="item-price">R$ 200</div>
+                </div>
+                <div class="item-card">
+                    <span class="item-badge">New</span>
+                    <img src="https://via.placeholder.com/120" alt="Space Tie">
+                    <div class="item-title">Space Tie</div>
+                    <div class="item-price">R$ 30</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visual Audio Player</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #f7f9fc;
+            font-family: sans-serif;
+            overflow: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .top-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        .btn {
+            background: #ffffff;
+            border: 2px solid #000000;
+            padding: 8px 14px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #eeeeee;
+        }
+
+        .page-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Decorative background soundwaves */
+        .wave-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .wave-bar {
+            position: absolute;
+            background-color: #00a2ed; /* The exact blue from your drawing */
+            border-radius: 0px; /* Sharp, square corners */
+            width: 28px;
+            
+            /* Base height when idle */
+            height: 12px !important; 
+            bottom: 18%;
+            
+            transform-origin: bottom center;
+            will-change: transform; 
+        }
+        
+        /* Balanced Layout: 5 Bars on the Left, 5 Bars on the Right */
+        .w1 { left: 6%; }
+        .w2 { left: 13%; }
+        .w3 { left: 20%; }
+        .w4 { left: 27%; }
+        .w5 { left: 34%; }
+        
+        .w6 { right: 34%; }
+        .w7 { right: 27%; }
+        .w8 { right: 20%; }
+        .w9 { right: 13%; }
+        .w10 { right: 6%; }
+
+        /* Fallback CSS animation loop for IE11 */
+        @keyframes legacyPulse {
+            0% { transform: scaleY(1); }
+            50% { transform: scaleY(12); }
+            100% { transform: scaleY(1); }
+        }
+        .legacy-animate {
+            animation: legacyPulse 1.5s infinite ease-in-out;
+        }
+
+        /* Center Content Interface Area */
+        .center-content {
+            position: relative;
+            z-index: 2; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Square Thumbnail Box */
+        .thumbnail-box {
+            width: 200px;
+            height: 200px;
+            border: 4px solid #000000;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+            margin-bottom: 25px;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .thumbnail-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* File Name Label */
+        .file-name-label {
+            font-weight: bold;
+            font-size: 16px;
+            color: #000000;
+            margin-bottom: 25px;
+            text-align: center;
+            max-width: 90%;
+            word-break: break-all;
+            min-height: 20px;
+        }
+
+        .player-controls-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Audio Player Box Container */
+        .player-box {
+            border: 4px solid #000000;
+            background-color: #ffffff;
+            padding: 15px;
+            width: 320px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        audio {
+            width: 100%;
+        }
+
+        /* Loop Switch Button */
+        .loop-btn {
+            width: 320px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .loop-active {
+            background: #00a2ed;
+            color: #ffffff;
+            border-color: #00a2ed;
+        }
+
+        .hidden-input {
+            display: none;
+        }
+
+        /* --- Dark Mode Toggle Theme Definitions --- */
+        body.dark-mode {
+            background: #121212 !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .btn {
+            background: #222222;
+            color: #ffffff;
+            border-color: #ffffff;
+        }
+        body.dark-mode .btn:hover {
+            background: #333333;
+        }
+        body.dark-mode .thumbnail-box,
+        body.dark-mode .player-box {
+            background-color: #1e1e1e;
+            border-color: #ffffff;
+        }
+        body.dark-mode .file-name-label {
+            color: #ffffff;
+        }
+        body.dark-mode .loop-active {
+            background: #00a2ed;
+            color: #ffffff;
+            border-color: #00a2ed;
+        }
+        body.dark-mode audio {
+            filter: invert(0.9) hue-rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-controls">
+    <button class="btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+</div>
+
+<div class="page-wrapper" id="drop-zone">
+    
+    <div class="wave-container">
+        <div id="b1" class="wave-bar w1"></div>
+        <div id="b2" class="wave-bar w2"></div>
+        <div id="b3" class="wave-bar w3"></div>
+        <div id="b4" class="wave-bar w4"></div>
+        <div id="b5" class="wave-bar w5"></div>
+        
+        <div id="b6" class="wave-bar w6"></div>
+        <div id="b7" class="wave-bar w7"></div>
+        <div id="b8" class="wave-bar w8"></div>
+        <div id="b9" class="wave-bar w9"></div>
+        <div id="b10" class="wave-bar w10"></div>
+    </div>
+
+    <div class="center-content">
+        
+        <div class="thumbnail-box" id="thumb-container" onclick="triggerFileSelect()">
+            <img id="audio-thumb" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23cccccc'><path d='M70,15 H40 V65 C36,61 28,60 22,64 C15,69 15,80 22,85 C29,90 39,87 40,78 V35 H70 V55 C66,51 58,50 52,54 C45,59 45,70 52,75 C59,80 69,87 70,78 V15 Z'/></svg>" alt="Thumbnail">
+        </div>
+
+        <div class="file-name-label" id="file-name-display">the file name here</div>
+
+        <div class="player-controls-group">
+            <div class="player-box">
+                <audio id="audio-player" controls></audio>
+            </div>
+            <button id="loop-toggle" class="btn loop-btn" onclick="toggleLoop()">Loop: OFF</button>
+        </div>
+
+    </div>
+
+    <input type="file" id="file-input" class="hidden-input" accept="audio/*" onchange="handleFileSelect(event)">
+</div>
+
+<script>
+    var dropZone = document.getElementById('drop-zone');
+    var audioPlayer = document.getElementById('audio-player');
+    var fileNameDisplay = document.getElementById('file-name-display');
+    var fileInput = document.getElementById('file-input');
+    var audioThumb = document.getElementById('audio-thumb');
+    var loopToggleBtn = document.getElementById('loop-toggle');
+
+    var placeholderSVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23cccccc'><path d='M70,15 H40 V65 C36,61 28,60 22,64 C15,69 15,80 22,85 C29,90 39,87 40,78 V35 H70 V55 C66,51 58,50 52,54 C45,59 45,70 52,75 C59,80 69,87 70,78 V15 Z'/></svg>";
+
+    var bars = [
+        document.getElementById('b1'), document.getElementById('b2'), document.getElementById('b3'),
+        document.getElementById('b4'), document.getElementById('b5'), document.getElementById('b6'),
+        document.getElementById('b7'), document.getElementById('b8'), document.getElementById('b9'),
+        document.getElementById('b10')
+    ];
+
+    var currentScales = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
+    var audioCtx = null;
+    var analyser = null;
+    var source = null;
+    var bufferLength = 0;
+    var dataArray = null;
+    var isAudioSetup = false;
+
+    function toggleDarkMode() {
+        var body = document.body;
+        if (body.className.indexOf('dark-mode') !== -1) {
+            body.className = body.className.replace('dark-mode', '').trim();
+        } else {
+            body.className += ' dark-mode';
+        }
+    }
+
+    function toggleLoop() {
+        if (audioPlayer.loop) {
+            audioPlayer.loop = false;
+            loopToggleBtn.innerText = "Loop: OFF";
+            loopToggleBtn.className = "btn loop-btn";
+        } else {
+            audioPlayer.loop = true;
+            loopToggleBtn.innerText = "Loop: ON";
+            loopToggleBtn.className = "btn loop-btn loop-active";
+        }
+    }
+
+    function triggerFileSelect() {
+        fileInput.click();
+    }
+
+    function handleFileSelect(event) {
+        var files = event.target.files;
+        if (files && files.length > 0) {
+            processAudioFile(files[0]);
+        }
+    }
+
+    /* Drag Drop System Listeners */
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    dropZone.addEventListener('dragenter', preventDefaults, false);
+    dropZone.addEventListener('dragover', preventDefaults, false);
+    dropZone.addEventListener('dragleave', preventDefaults, false);
+    dropZone.addEventListener('drop', function(e) {
+        preventDefaults(e);
+        var files = e.dataTransfer.files;
+        if (files && files.length > 0) {
+            processAudioFile(files[0]);
+        }
+    }, false);
+
+    /* Clipboard Paste Listeners */
+    document.addEventListener('paste', function(e) {
+        var items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].kind === 'file' && items[i].type.indexOf('audio/') !== -1) {
+                var file = items[i].getAsFile();
+                processAudioFile(file);
+                break;
+            }
+        }
+    }, false);
+
+    /* Web Audio Visualizer API Loop Setup */
+    function initVisualizer() {
+        if (isAudioSetup) return;
+
+        var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+            for (var i = 0; i < bars.length; i++) {
+                bars[i].className += " legacy-animate";
+            }
+            return;
+        }
+
+        audioCtx = new AudioContextClass();
+        analyser = audioCtx.createAnalyser();
+        
+        analyser.fftSize = 64; 
+        analyser.smoothingTimeConstant = 0.55; // Boosted baseline nodes smoothing
+
+        source = audioCtx.createMediaElementSource(audioPlayer);
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+
+        bufferLength = analyser.frequencyBinCount;
+        dataArray = new Uint8Array(bufferLength);
+        isAudioSetup = true;
+
+        animateBars();
+    }
+
+    function animateBars() {
+        if (audioPlayer.paused || audioPlayer.ended) {
+            resetBarsToBaseline();
+            return;
+        }
+
+        var requestAnimationFrameFn = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+        if (requestAnimationFrameFn) {
+            requestAnimationFrameFn(animateBars);
+        } else {
+            setTimeout(animateBars, 16);
+        }
+
+        analyser.getByteFrequencyData(dataArray);
+
+        // Mapping optimized spectral indexes
+        var sampleOffsets = [1, 2, 4, 6, 8, 8, 6, 4, 2, 1];
+        
+        // Dynamic multipliers to balance low bass (left) and high frequencies (right) to make them equal heights
+        var sensitivityMultipliers = [1.1, 1.2, 1.3, 1.5, 1.8, 1.8, 1.5, 1.3, 1.2, 1.1];
+
+        var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        var maxPossibleHeightPixels = windowHeight * 0.72; // Absolute safety cap layout wall (72% viewport window)
+        var baseBarHeight = 12;
+        var maxScaleAllowed = maxPossibleHeightPixels / baseBarHeight;
+
+        for (var i = 0; i < bars.length; i++) {
+            var rawValue = dataArray[sampleOffsets[i] % bufferLength];
+            var percent = rawValue / 255;
+            
+            // Step 1: Calculate huge linear height target
+            var rawScaleTarget = 1 + (percent * 55 * sensitivityMultipliers[i]);
+            
+            // Step 2: Use soft exponential decay formula to prevent flat clipping at the ceiling
+            var targetScaleY = maxScaleAllowed * (1 - Math.exp(-rawScaleTarget / maxScaleAllowed));
+            
+            // Linear Interpolation smoothing
+            currentScales[i] = currentScales[i] + (targetScaleY - currentScales[i]) * 0.18;
+            
+            bars[i].style.transform = "scaleY(" + currentScales[i] + ")";
+        }
+    }
+
+    function resetBarsToBaseline() {
+        for (var i = 0; i < bars.length; i++) {
+            currentScales[i] = currentScales[i] + (1 - currentScales[i]) * 0.2;
+            bars[i].style.transform = "scaleY(" + currentScales[i] + ")";
+        }
+        
+        if (!audioPlayer.paused && !audioPlayer.ended) return;
+        
+        var totalScaleSum = 0;
+        for (var j = 0; j < currentScales.length; j++) {
+            totalScaleSum += Math.abs(currentScales[j] - 1);
+        }
+        
+        if (totalScaleSum > 0.05) {
+            var requestAnimationFrameFn = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+            if (requestAnimationFrameFn) {
+                requestAnimationFrameFn(resetBarsToBaseline);
+            } else {
+                setTimeout(resetBarsToBaseline, 16);
+            }
+        }
+    }
+
+    audioPlayer.onplay = function() {
+        initVisualizer();
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        animateBars();
+    };
+
+    audioPlayer.onpause = function() {
+        resetBarsToBaseline();
+    };
+
+    audioPlayer.onended = function() {
+        resetBarsToBaseline();
+    };
+
+    /* Primary Local Data Load System Controller */
+    function processAudioFile(file) {
+        fileNameDisplay.innerText = file.name || "Pasted Audio Track";
+        audioThumb.src = placeholderSVG;
+
+        var URLObj = window.URL || window.webkitURL;
+        if (URLObj && URLObj.createObjectURL) {
+            audioPlayer.src = URLObj.createObjectURL(file);
+            audioPlayer.load();
+            audioPlayer.play();
+        }
+
+        if (window.jsmediatags) {
+            window.jsmediatags.read(file, {
+                onSuccess: function(tag) {
+                    var tags = tag.tags;
+                    if (tags && tags.picture) {
+                        var image = tags.picture;
+                        var base64String = "";
+                        for (var i = 0; i < image.data.length; i++) {
+                            base64String += String.fromCharCode(image.data[i]);
+                        }
+                        var base64 = "data:" + image.format + ";base64," + window.btoa(base64String);
+                        audioThumb.src = base64;
+                    }
+                },
+                onError: function(error) {
+                    console.log('No embedded thumbnail found.');
+                }
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

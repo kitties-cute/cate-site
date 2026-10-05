@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - EBURG</title>
+    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/316217684?s=400&u=2b01b96d2ad1e4f698ff1394e711e619a9a2f029&v=4">
+    <link rel="stylesheet" href="style.css">
+    <script src="maintenance.js"></script>
+    <style>
+        body { background-color: #e3e3e3; margin: 0; font-family: Arial, sans-serif; }
+        .home-layout { display: flex; max-width: 1200px; margin: 0 auto; padding: 15px 10px; gap: 15px; }
+        .sidebar-left { width: 170px; flex-shrink: 0; }
+        .user-mini-profile { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 13px; margin-bottom: 15px; }
+        .user-mini-profile img { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ccc; }
+        .nav-list { list-style: none; padding: 0; margin-bottom: 20px; }
+        .nav-list li a { display: flex; align-items: center; gap: 10px; color: #393b3d; text-decoration: none; padding: 6px 0; font-size: 13px; font-weight: 600; }
+        .nav-list li a:hover { color: #00a2ff; }
+        .blog-section h4 { font-size: 11px; color: #757575; text-transform: uppercase; margin-bottom: 8px; }
+        .blog-post { font-size: 11px; margin-bottom: 8px; line-height: 1.3; }
+        .blog-post a { color: #00a2ff; text-decoration: none; font-weight: 600; }
+        .main-feed { flex-grow: 1; min-width: 0; }
+        .welcome-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .avatar-circle-large { width: 80px; height: 80px; border-radius: 50%; background: #fff; border: 1px solid #ccc; overflow: hidden; }
+        .avatar-circle-large img { width: 100%; height: 100%; object-fit: cover; }
+        .welcome-header h1 { font-size: 26px; color: #393b3d; margin: 0; }
+        .section-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .section-bar h2 { font-size: 16px; font-weight: bold; margin: 0; }
+        .see-all-link { color: #00a2ff; text-decoration: none; font-size: 12px; font-weight: 600; }
+        .friends-row { display: flex; gap: 12px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; }
+        .friend-card { text-align: center; width: 65px; flex-shrink: 0; text-decoration: none; color: inherit; }
+        .friend-avatar { width: 55px; height: 55px; border-radius: 50%; background: #fff; border: 1px solid #d6d6d6; margin: 0 auto 4px auto; overflow: hidden; position: relative; }
+        .friend-avatar img { width: 100%; height: 100%; }
+        .status-dot { width: 10px; height: 10px; background: #00a227; border-radius: 50%; position: absolute; bottom: 2px; right: 2px; border: 1px solid #fff; }
+        .friend-name { font-size: 10px; color: #393b3d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .home-games-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
+        .home-game-card { background: white; border: 1px solid #d6d6d6; border-radius: 3px; overflow: hidden; text-decoration: none; color: inherit; }
+        .home-game-card img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+        .home-game-info { padding: 5px; }
+        .home-game-title { font-size: 11px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .home-game-stats { font-size: 10px; color: #757575; margin-top: 2px; }
+        .sidebar-right { width: 160px; flex-shrink: 0; }
+        .ad-box-vertical { width: 160px; height: 600px; background: #ffffff; border: 1px solid #ccc; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; font-size: 11px; text-align: center; padding: 10px; box-sizing: border-box; }
+        .ad-box-vertical img { max-width: 140px; margin-bottom: 10px; }
+    </style>
+    <script src="/imgfix.js"></script>
+</head>
+<body>
+
+    <header>
+        <a href="/home" class="logo">
+            <img src="EBURG-logo.png" alt="EBURG">
+        </a>
+        <nav class="main-nav">
+            <a href="/home">Home</a>
+            <a href="/games">Discover</a>
+            <a href="/catalog">Catalog</a>
+            <a href="#">Develop</a>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="nav-right">
+            <a href="#" id="headerProfileLink" class="user-display-name">Guest</a>
+        </div>
+    </header>
+
+    <div class="home-layout">
+        <aside class="sidebar-left">
+            <div class="user-mini-profile">
+                <img src="https://avatars.githubusercontent.com/u/316217684?s=400&v=4" alt="Avatar">
+                <span class="user-display-name">Guest</span>
+            </div>
+
+            <ul class="nav-list">
+                <li><a href="#" id="sidebarProfileLink">👤 Profile</a></li>
+                <li><a href="/avatar">👕 Avatar</a></li>
+                <li><a href="#">📦 Inventory</a></li>
+                <li><a href="#">💰 Money</a></li>
+                <li><a href="#">👥 Groups</a></li>
+                <li><a href="#">⭐ Premium</a></li>
+            </ul>
+
+            <div class="blog-section">
+                <h4>Blog</h4>
+                <div class="blog-post">
+                    <a href="#">EBURG 2017 Client Update</a>
+                    <div style="color: #777;">2 days ago</div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-feed">
+            <div class="welcome-header">
+                <div class="avatar-circle-large">
+                    <img src="https://avatars.githubusercontent.com/u/316217684?s=400&v=4" alt="Avatar Profile">
+                </div>
+                <h1 id="welcomeText">Welcome, Guest!</h1>
+            </div>
+
+            <div class="section-bar">
+                <h2>Friends (3)</h2>
+                <a href="#" class="see-all-link">See All</a>
+            </div>
+            <div class="friends-row">
+                <a href="/users/karsonypoo/profile" class="friend-card">
+                    <div class="friend-avatar">
+                        <img src="https://via.placeholder.com/55" alt="Friend">
+                        <div class="status-dot"></div>
+                    </div>
+                    <div class="friend-name">karsonypoo</div>
+                </a>
+                <a href="/users/Senxos/profile" class="friend-card">
+                    <div class="friend-avatar">
+                        <img src="https://via.placeholder.com/55" alt="Friend">
+                        <div class="status-dot"></div>
+                    </div>
+                    <div class="friend-name">Senxos</div>
+                </a>
+                <a href="/users/levisimp/profile" class="friend-card">
+                    <div class="friend-avatar">
+                        <img src="https://via.placeholder.com/55" alt="Friend">
+                    </div>
+                    <div class="friend-name">levisimp</div>
+                </a>
+            </div>
+
+            <div class="section-bar">
+                <h2>Continue</h2>
+                <a href="#" class="see-all-link">See All &rarr;</a>
+            </div>
+            <div class="home-games-grid">
+                <a href="#" class="home-game-card">
+                    <img src="https://via.placeholder.com/120" alt="FNAF">
+                    <div class="home-game-info">
+                        <div class="home-game-title">Five Nights At Treasure Island</div>
+                        <div class="home-game-stats">👍 43% 👤 0</div>
+                    </div>
+                </a>
+                <a href="#" class="home-game-card">
+                    <img src="https://via.placeholder.com/120" alt="Doge Tycoon">
+                    <div class="home-game-info">
+                        <div class="home-game-title">Dogecoin Mining Tycoon</div>
+                        <div class="home-game-stats">👍 90% 👤 4.2K</div>
+                    </div>
+                </a>
+                <a href="#" class="home-game-card">
+                    <img src="https://via.placeholder.com/120" alt="Sitting Simulator">
+                    <div class="home-game-info">
+                        <div class="home-game-title">sitting simulator</div>
+                        <div class="home-game-stats">👍 44% 👤 43</div>
+                    </div>
+                </a>
+            </div>
+        </main>
+
+        <aside class="sidebar-right">
+            <div class="ad-box-vertical">
+                <img src="eburgblue.png" alt="EBURG Blue Logo">
+                <span>160x600<br>Advertisement</span>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Dynamic User Display
+        const currentUser = localStorage.getItem('eburg_user') || 'Guest';
+        
+        document.querySelectorAll('.user-display-name').forEach(el => el.innerText = currentUser);
+        document.getElementById('welcomeText').innerText = `Welcome, ${currentUser}!`;
+        
+        const profileUrl = `/users/${currentUser}/profile`;
+        document.getElementById('headerProfileLink').href = profileUrl;
+        document.getElementById('sidebarProfileLink').href = profileUrl;
+    </script>
+</body>
+</html>

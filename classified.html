@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>REDACTED - EBURG Vault</title>
+    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/316217684?s=400&u=2b01b96d2ad1e4f698ff1394e711e619a9a2f029&v=4">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #0b0c10;
+            color: #c5c6c7;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .vault-card {
+            background: #1f2833;
+            border: 2px solid #66fcf1;
+            box-shadow: 0 0 20px rgba(102, 252, 241, 0.2);
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            border-radius: 6px;
+        }
+        .stamp {
+            display: inline-block;
+            border: 3px solid #ff4d4d;
+            color: #ff4d4d;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 4px 8px;
+            transform: rotate(-5deg);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        h1 {
+            color: #66fcf1;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .log-entry {
+            background: #0b0c10;
+            padding: 15px;
+            border-left: 3px solid #66fcf1;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .redacted {
+            background-color: #66fcf1;
+            color: #66fcf1;
+            user-select: all; /* Allows highlighting to reveal */
+            cursor: pointer;
+        }
+        .redacted:hover {
+            color: #0b0c10;
+        }
+        .footer-note {
+            font-size: 11px;
+            color: #8892b0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="vault-card">
+        <div class="stamp">EBURG Security Clearance Level 5</div>
+        <h1>PROJECT 2017: ARCHIVAL LOG #069</h1>
+        
+        <div class="log-entry">
+            <p><strong>DATE:</strong> [REDACTED], 2017</p>
+            <p><strong>SUBJECT:</strong> 2017 Client Handshake & Local Arbiter</p>
+            <br>
+            <p>
+                Attempting to force <span class="redacted">version-xxxxxxxxxxxx</span> to accept custom URI parameters without crashing RakNet engine. 
+                SecuROM patches successful, but <span class="redacted">RCCService.exe</span> keeps dropping tickets on port 53640.
+            </p>
+            <br>
+            <p>
+                <strong>Developer Note:</strong> If you are reading this page, you either guessed the URL or inspected the site source code. Highlight the redacted text above to reveal secrets! 🧪
+            </p>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="btn-green" style="background-color: #66fcf1; color: #0b0c10; text-decoration: none; font-family: sans-serif;">
+                Return to EBURG Home
+            </a>
+        </div>
+        
+        <p class="footer-note" style="margin-top: 20px;">
+            EBURG Archival Core // No external links lead to this document.
+        </p>
+    </div>
+
+</body>
+</html>

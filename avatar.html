@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Avatar Editor - EBURG</title>
+    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/316217684?s=400&u=2b01b96d2ad1e4f698ff1394e711e619a9a2f029&v=4">
+    <link rel="stylesheet" href="style.css">
+    <script src="maintenance.js"></script>
+    <style>
+        .avatar-editor-layout {
+            display: flex;
+            gap: 20px;
+        }
+        .avatar-preview-pane {
+            width: 300px;
+        }
+        .avatar-3d-box {
+            width: 100%;
+            height: 300px;
+            background: #fff;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .toggle-3d {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .inventory-pane {
+            flex-grow: 1;
+        }
+        .tab-nav {
+            display: flex;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 15px;
+        }
+        .tab-nav div {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .tab-nav div.active {
+            border-bottom: 2px solid #00a2ff;
+            color: #00a2ff;
+        }
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+    </style>
+    <script src="/imgfix.js"></script>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">
+            <img src="EBURG-logo.png" alt="EBURG">
+        </a>
+        <nav class="main-nav">
+            <a href="games.html">Games</a>
+            <a href="catalog.html">Catalog</a>
+            <a href="#">Develop</a>
+            <a href="#">Robux</a>
+        </nav>
+        <div class="search-bar"><input type="text" placeholder="Search"></div>
+        <div class="nav-right"><a href="profile.html">My Profile</a></div>
+    </header>
+
+    <div class="container">
+        <h2>Avatar Editor</h2>
+        <div class="avatar-editor-layout" style="margin-top: 15px;">
+            <div class="avatar-preview-pane">
+                <div class="avatar-3d-box">
+                    <button class="btn-control toggle-3d">3D</button>
+                    <img src="https://raw.githubusercontent.com/EBURGG/site/refs/heads/main/placeholders/avatar1.png" alt="Avatar Preview">
+                </div>
+            </div>
+
+            <div class="inventory-pane card">
+                <div class="tab-nav">
+                    <div class="active">Wardrobe</div>
+                    <div>Clothing</div>
+                    <div>Body</div>
+                    <div>Animations</div>
+                </div>
+                <div class="inventory-grid">
+                    <div class="asset-card">
+                        <img src="https://via.placeholder.com/90" alt="Item">
+                        <div style="font-size: 11px;">Default Cap</div>
+                    </div>
+                    <div class="asset-card">
+                        <img src="https://via.placeholder.com/90" alt="Item">
+                        <div style="font-size: 11px;">Blue Shirt</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Games - EBURG</title>
+    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/316217684?s=400&u=2b01b96d2ad1e4f698ff1394e711e619a9a2f029&v=4">
+    <link rel="stylesheet" href="style.css">
+    <script src="maintenance.js"></script>
+    <style>
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .game-card {
+            background: white;
+            border-radius: 3px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .game-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+        .game-title {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 4px 0 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .game-stats {
+            font-size: 10px;
+            color: #757575;
+            padding: 0 4px 4px 4px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0 8px 0;
+        }
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .btn-see-all {
+            background: #00a2ff;
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            font-size: 11px;
+            border-radius: 2px;
+            text-decoration: none;
+        }
+    </style>
+    <script src="/imgfix.js"></script>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">
+            <img src="EBURG-logo.png" alt="EBURG">
+        </a>
+        <nav class="main-nav">
+            <a href="games.html">Games</a>
+            <a href="catalog.html">Catalog</a>
+            <a href="#">Develop</a>
+            <a href="#">Robux</a>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="nav-right">
+            <a href="index.html">Sign Up</a>
+            <a href="index.html">Log In</a>
+        </div>
+    </header>
+
+    <div class="container" style="display: flex;">
+        <div style="flex-grow: 1;">
+            <div class="section-header">
+                <h2>Popular</h2>
+                <a href="#" class="btn-see-all">See All</a>
+            </div>
+            <div class="games-grid">
+                <a href="game-detail.html" class="game-card">
+                    <img src="https://via.placeholder.com/100" alt="undefined">
+                    <div class="game-title">unknown - i didnt add this yet</div>
+                    <div class="game-stats">👍 0%  👤 0K</div>
+                </a>
+                <a href="game-detail.html" class="game-card">
+                    <img src="https://via.placeholder.com/100" alt="MeepCity">
+                    <div class="game-title">MeepCity</div>
+                    <div class="game-stats">👍 85%  👤 15.2K</div>
+                </a>
+            </div>
+
+            <div class="section-header">
+                <h2>Top Earning</h2>
+                <a href="#" class="btn-see-all">See All</a>
+            </div>
+            <div class="games-grid">
+                <a href="game-detail.html" class="game-card">
+                    <img src="https://via.placeholder.com/100" alt="Bloxburg">
+                    <div class="game-title">Welcome to Bloxburg</div>
+                    <div class="game-stats">👍 92%  👤 12.1K</div>
+                </a>
+            </div>
+        </div>
+
+        <div style="width: 160px; margin-left: 15px;">
+            <div style="width: 160px; height: 600px; background: #ccc; text-align: center; line-height: 600px; font-size: 12px;">
+                160x600 Ad
+            </div>
+        </div>
+    </div>
+</body>
+</html>
